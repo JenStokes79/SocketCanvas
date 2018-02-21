@@ -1,2 +1,13 @@
 <h1>{{title}}</h1>
 <p>This is a test Heroku deployment of a simple clock run using Socket.io</p>
+
+<div id='server-time'></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const client = io.connect(window.location.host);
+  client.on('server', function(data) {
+    console.log(data);
+    // client.emit('client', { hello: 'from client' });
+    $('#server-time').html(data)
+  });
+</script>

@@ -12,16 +12,6 @@
 
 <body>
   {{{body}}}
-  <div id='server-time'></div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const client = io.connect(window.location.host);
-    client.on('server', function(data) {
-      console.log(data);
-      // client.emit('client', { hello: 'from client' });
-      $('#server-time').html(data)
-    });
-  </script>
 </body>
 
 </html>
