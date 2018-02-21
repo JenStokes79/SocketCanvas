@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  {{{body}}}
+  <div id='server-time'></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const client = io.connect(window.location.host);
+    client.on('server', function(data) {
+      console.log(data);
+      // client.emit('client', { hello: 'from client' });
+      $('#server-time').html(data)
+    });
+  </script>
+</body>
+
+</html>
