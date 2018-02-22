@@ -31,6 +31,8 @@ io.on('connection', function(server) { //handles new connections
     for (var i in line_history) {
         server.emit('draw_line', { line: line_history[i] });
     }
+    //TODO: Add users to array and handle max number of users allowed in the room
+
     //2 .add handler that handles message draw_line when emitted frome existing connections
     server.on('draw_line', function(data) {
         //add the recieved line to line_history
