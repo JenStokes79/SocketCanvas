@@ -42,6 +42,14 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
         mouse.pos.y = (e.clientY - offsetY) / height;
         mouse.move = true;
     };
+    let erase = false;
+    //Begin keypress shortcuts
+    document.onkeypress = function(e) {
+        let x = e.which || e.keyCode;
+        if (x === 120) { //if 'X' key is pressed, erase lines
+            erase = true;
+        }
+    }
 
     // draw line received from server
     client.on('draw_line', function(data) {
@@ -52,6 +60,15 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
         context.stroke();
     });
 
+    // // erase drawing recieved from the server
+    client.on('erase_board', function(data) {
+        eraseBoard();
+    });
+
+    function eraseBoard() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
     // main loop, running every 25ms
     function mainLoop() {
         // check if the user is drawing
@@ -59,6 +76,10 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
             // send line to to the server
             client.emit('draw_line', { line: [mouse.pos, mouse.pos_prev] });
             mouse.move = false;
+        }
+        if (erase) { //user1 erases -> server gets message -> emit to other users
+            client.emit('erase_board', eraseBoard());
+            erase = false;
         }
         //if  not drawing, assign values to pos_prev to begin the drawing process
         mouse.pos_prev = { x: mouse.pos.x, y: mouse.pos.y };

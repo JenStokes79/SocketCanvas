@@ -37,8 +37,14 @@ io.on('connection', function(server) { //handles new connections
         // send line to all clients
         io.emit('draw_line', { line: data.line });
     });
-    //3. Create handler for erase_drawing
+    //3. Create handler for erase_board
     //Code goes here
+    server.on('erase_board', function(data) { //adds lines to history
+        //add the recieved line to line_history
+        line_history = [];
+        // send line to all clients
+        io.emit('erase_board', { erase: 'user x erased the board' });
+    });
 
     //4. Create handler for user disconnect
     //Code goes here
