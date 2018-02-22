@@ -5,7 +5,6 @@ const http = require("http");
 //third-party modules
 const express = require('express');
 
-
 //routes
 const index = require('./routes/index');
 
@@ -16,30 +15,37 @@ app.set('view engine', 'hbs');
 app.use('/', index);
 app.use(express.static(path.join(__dirname, 'public')));
 
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-const PORT = process.env.PORT || 8080;
+//Socket.io configuration
+var server = require('http').Server(app); //Create a new HTTP Server
+var io = require('socket.io')(server); //Use that server to run Socket.io
+const PORT = process.env.PORT || 8080; //Set the port
+server.listen(PORT); //Listen for activity
 
-server.listen(PORT);
+// Store previously drawn lines in this array so 
+// when newcomers join, the whole drawing renders
+let line_history = [];
 
-io.on('connection', function (server) {
-  
-  setInterval(() => server.emit('server', new Date().toTimeString()), 1000);
-  
-  server.on('client', function (data) {
-    console.log(data);
-  });
-  server.on('client', function (data) {
-    console.log(data);
-  });
-  server.on('disconnect', function () {
-    io.emit('user disconnected');
-  });
+io.on('connection', function(server) { //handles new connections
+    //1. send line history to new client, draws lines in history
+    for (var i in line_history) {
+        server.emit('draw_line', { line: line_history[i] });
+    }
+    //2 .add handler that handles message draw_line
+    server.on('draw_line', function(data) { //adds lines to history
+        //add the recieved line to line_history
+        line_history.push(data.line);
+        // send line to all clients
+        io.emit('draw_line', { line: data.line });
+    });
+    //3. Create handler for erase_drawing
+    //Code goes here
+
+    //4. Create handler for user disconnect
+    //Code goes here
 });
-      
+
 
 
 module.exports = {
-  app
+    app
 }
-

@@ -1,13 +1,8 @@
 <h1>{{title}}</h1>
-<p>This is a test Heroku deployment of a simple clock run using Socket.io</p>
+<p>This is a test Heroku deployment of a canvas with WebSockets.</p>
 
-<div id='server-time'></div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-  const client = io.connect(window.location.host);
-  client.on('server', function(data) {
-    console.log(data);
-    // client.emit('client', { hello: 'from client' });
-    $('#server-time').html(data)
-  });
-</script>
+<script src="/javascripts/client.js"></script>
+<canvas id='myCanvas'></canvas>
+
