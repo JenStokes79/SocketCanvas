@@ -26,21 +26,21 @@ server.listen(PORT); //Listen for activity
 let line_history = [];
 
 io.on('connection', function(server) { //handles new connections
-    //1. send line history to new client, draws lines in history
+
+    //1. emit line history to new client, which will draw the lines from the whole session
     for (var i in line_history) {
         server.emit('draw_line', { line: line_history[i] });
     }
-    //2 .add handler that handles message draw_line
-    server.on('draw_line', function(data) { //adds lines to history
+    //2 .add handler that handles message draw_line when emitted frome existing connections
+    server.on('draw_line', function(data) {
         //add the recieved line to line_history
         line_history.push(data.line);
         // send line to all clients
         io.emit('draw_line', { line: data.line });
     });
-    //3. Create handler for erase_board
-    //Code goes here
-    server.on('erase_board', function(data) { //adds lines to history
-        //add the recieved line to line_history
+    //3. add handler for erase_board
+    server.on('erase_board', function(data) {
+        //erase line history
         line_history = [];
         // send line to all clients
         io.emit('erase_board', { erase: 'Server to client: User x erased the board' });
