@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
     var context = canvas.getContext('2d');
     var width = window.innerWidth;
     var height = window.innerHeight;
+
     var client = io.connect(window.location.host); //connects to wherever we need given the context
 
     // set canvas to half the browser's width and height
@@ -77,8 +78,8 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
             client.emit('draw_line', { line: [mouse.pos, mouse.pos_prev] });
             mouse.move = false;
         }
-        if (erase) { //user1 erases -> server gets message -> emit to other users
-            client.emit('erase_board', eraseBoard());
+        if (erase) { //user1 erases -> server gets message -> updates client state for all users
+            client.emit('erase_board', 'Client to server: User x erased the board');
             erase = false;
         }
         //if  not drawing, assign values to pos_prev to begin the drawing process
@@ -87,3 +88,6 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
     }
     mainLoop();
 });
+
+// socket flow: 
+// user event -> server gets message and emits event back to client -> client recieves message updates state

@@ -43,7 +43,7 @@ io.on('connection', function(server) { //handles new connections
         //add the recieved line to line_history
         line_history = [];
         // send line to all clients
-        io.emit('erase_board', { erase: 'user x erased the board' });
+        io.emit('erase_board', { erase: 'Server to client: User x erased the board' });
     });
 
     //4. Create handler for user disconnect
