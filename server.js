@@ -1,19 +1,31 @@
+//todo: 
+// - create a namespace
+// - limit max number of connections
+// - convert drawing to data URI and email with nodemailer?
+
 //native modules
 const path = require('path');
 const http = require("http");
+const bodyParser = require("body-parser");
+
 
 //third-party modules
 const express = require('express');
 
 //routes
 const index = require('./routes/index');
+const api_routes = require('./routes/api_routes');
 
 // app setup
 const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use('/', index);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', api_routes);
+
 
 //Socket.io configuration
 var server = require('http').Server(app); //Create a new HTTP Server
@@ -26,8 +38,7 @@ server.listen(PORT); //Listen for activity
 let line_history = [];
 
 io.on('connection', function(server) { //handles new connections
-
-    //1. emit line history to new client, which will draw the lines from the whole session
+    //1. emit line history to new client, which will draw pre-existing lines from the entire session
     for (var i in line_history) {
         server.emit('draw_line', { line: line_history[i] });
     }
@@ -40,19 +51,22 @@ io.on('connection', function(server) { //handles new connections
         // send line to all clients
         io.emit('draw_line', { line: data.line });
     });
+
     //3. add handler for erase_board
     server.on('erase_board', function(data) {
+        console.log(data.message);
         //erase line history
         line_history = [];
         // send line to all clients
-        io.emit('erase_board', { erase: 'Server to client: User x erased the board' });
+        io.emit('erase_board', { message: 'Server to client: User x erased the board' });
     });
 
     //4. Create handler for user disconnect
     //Code goes here
+
 });
 
-
+// server -> emit an event to client -> client recieves the event -> emit event back to server
 
 module.exports = {
     app
