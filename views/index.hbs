@@ -12,11 +12,14 @@ $('form').submit(function(e){
    
     e.preventDefault();
    let sn = {
-       name: $('#sn').val()
+       name: $('#sn').val(),
+       client_id: '',
+       points: 1
    }
      $.post("/api/users", sn, function(data, err) {
       
      });
 })
-   
+ // res.json() username -> associate username with client-id -> 
+// persist users in api until disconnection -> store high scores MySQL
 </script>
