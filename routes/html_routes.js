@@ -5,13 +5,14 @@ const users = require('../api/users.js');
 const io = require('../server');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Get ready...' });
-});
+// router.get('/', function(req, res, next) {
+//     res.render('index', { title: 'Get ready...' });
+// });
 
 /* GET game page. */
-router.get('/game', function(req, res, next) {
-    res.render('game', { title: 'Heroku WebSocket Canvas Deployment' });
+router.get('/', function(req, res, next) {
+    res.render('index', { title: 'Heroku WebSocket Canvas Deployment' });
+
 });
 
 // Store previously drawn lines in this array so 
@@ -22,12 +23,15 @@ let people = {};
 
 //handles new connections
 io.on('connection', function(server) {
-    //When users hit GO, store their info in the hash for reference in-game
-    server.on('form_submit', function(data) {
-        people[data.name] = data;
-    });
-    server.emit('show_people', people)
 
+    let client_name = server.name;
+    //When users hit GO, store their info in the hash for reference in-game
+    server.on('join', function(data) {
+        people[data.name] = data;
+        client_name = data.name;
+        io.emit('join', people)
+            // console.log(server.name); //bad describer, should be socket.name
+    });
 
     //emit line history to new client, which will draw pre-existing lines from the entire session
     for (var i in line_history) {
@@ -53,5 +57,6 @@ io.on('connection', function(server) {
 
 });
 
+//TODO: Handle join, handle leave
 
 module.exports = router;

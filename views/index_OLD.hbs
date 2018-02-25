@@ -3,28 +3,14 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/canvas.js"></script>
+
 <form method='POST' action='/game'>
     Join as: <input type='text' placeholder='username' id='sn'></input>
     <input type='submit' value='Go!'></button>
 </form>
 
-<div id='user'>
-  
-</div>
-
-{{!-- Create color selectors right here --}}
-<canvas id='myCanvas'></canvas>
-
-<script> //Will export as game.js
+<script> //will export as form.js
 let client = io(window.location.host);
-
-//loop through the data and display users an stats on the page
-
-
-
- //will export as form.js
-//let client = io(window.location.host);
 $('form').submit(function(e){
     e.preventDefault();
 
@@ -34,14 +20,7 @@ $('form').submit(function(e){
        wins: 0,
        is_drawing: false
    }
-    client.emit('join', sn);
-
-   client.on('join', function(data){
-      console.log(data);
-      for(key in data){
-$('#user').append(`<div>${data[key].name}</div>`)
-      }
-   })
+    client.emit('form_submit', sn);
 
      /*$.post("/api/users", sn)
      .then(function(){
