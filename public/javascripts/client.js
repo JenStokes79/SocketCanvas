@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
             client_id: client.id
         }
         client.emit('people', people)
+        console.log(people);
     });
 
 
