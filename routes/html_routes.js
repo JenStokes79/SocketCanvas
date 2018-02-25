@@ -25,7 +25,6 @@ io.on('connection', function(server) {
     //When users hit GO, store their info in the hash for reference in-game
     server.on('form_submit', function(data) {
         people[data.name] = data;
-        console.log('people:', people);
     });
     server.on('show_people', function(data) {
         console.log('people:', people);

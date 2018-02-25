@@ -3,11 +3,13 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
+
 <form method='POST' action='/game'>
     Join as: <input type='text' placeholder='username' id='sn'></input>
     <input type='submit' value='Go!'></button>
 </form>
-<script>
+
+<script> //will export as form.js
 let client = io(window.location.host);
 $('form').submit(function(e){
     e.preventDefault();
