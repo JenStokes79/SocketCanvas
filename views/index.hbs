@@ -39,7 +39,7 @@ $('form').submit(function(e){
    client.on('join', function(data){
       console.log(data);
       for(key in data){
-$('#user').append(`<div>${data[key].name}</div>`)
+$('#user').empty().append(`<div>${data[key].name}</div>`)
       }
    })
 
