@@ -21,8 +21,6 @@ let client = io(window.location.host);
 
 //loop through the data and display users an stats on the page
 
-
-
  //will export as form.js
 //let client = io(window.location.host);
 $('form').submit(function(e){
@@ -38,8 +36,9 @@ $('form').submit(function(e){
 
    client.on('join', function(data){
       console.log(data);
+      $('#user').html('');
       for(key in data){
-$('#user').append(`<div>${data[key].name}</div>`)
+       $('#user').append(`<div>${data[key].name}</div>`)
       }
    })
 
