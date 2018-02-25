@@ -28,7 +28,7 @@ server.listen(PORT); //Listen for activity
 module.exports = io;
 
 //routes
-const index = require('./routes/index');
+const html_routes = require('./routes/html_routes');
 const api_routes = require('./routes/api_routes');
-app.use('/', index);
+app.use('/', html_routes);
 app.use('/', api_routes);

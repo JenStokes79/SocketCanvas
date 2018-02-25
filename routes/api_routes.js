@@ -5,6 +5,7 @@ const http = require('http')
 const io = require('../server');
 
 
+let people = {};
 
 /* POST users. */
 router.post('/api/users', function(req, res, next) {
@@ -12,16 +13,11 @@ router.post('/api/users', function(req, res, next) {
     res.json(req.body);
     users.push(req.body)
 
-    io.on('connection', function(server) {
-        server.emit('nickname', { name: req.body.name });
-    });
-
-
-
 });
 
 /* GET users. */
 router.get('/api/users', function(req, res, next) {
+
     res.json(users);
 });
 

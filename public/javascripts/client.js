@@ -24,23 +24,12 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
     let height = window.innerHeight;
 
     //connects socket.io to wherever we need given the context
-    let client = io.connect(window.location.host);
-    let people = {};
-    $.get("/api/users", function(data) {
-        console.log('Recieved POST', data);
-    });
-    client.on('nickname', function(data) {
-        client.nickname = data.name;
-        console.log('Assigned nickname ', data);
-        people[client.nickname] = {
-            score: 0,
-            is_drawing: false,
-            client_id: client.id
-        }
-        client.emit('people', people)
-        console.log(people);
-    });
+    let client = io(window.location.host);
 
+    $.get("/api/users", function(data) {
+        // console.log('Recieved POST', data);
+
+    });
 
     // set canvas to half the browser's width and height
     canvas.width = width / 2;
