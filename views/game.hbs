@@ -3,11 +3,13 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/client.js"></script>
+<script src="/javascripts/canvas.js"></script>
 
 {{!-- Create color selectors right here --}}
 <canvas id='myCanvas'></canvas>
 
-
-  
-
+<script>
+let client = io(window.location.host);
+client.emit('show_people')
+//loop through the data and display users an stats on the page
+</script>

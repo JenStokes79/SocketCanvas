@@ -4,20 +4,16 @@ const users = require('../api/users.js');
 const http = require('http')
 const io = require('../server');
 
-
-let people = {};
+// let people = {};
 
 /* POST users. */
 router.post('/api/users', function(req, res, next) {
-
     res.json(req.body);
     users.push(req.body)
-
 });
 
 /* GET users. */
 router.get('/api/users', function(req, res, next) {
-
     res.json(users);
 });
 

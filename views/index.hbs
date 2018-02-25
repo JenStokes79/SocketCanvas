@@ -3,7 +3,7 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<form method='POST'>
+<form method='POST' action='/game'>
     Join as: <input type='text' placeholder='username' id='sn'></input>
     <input type='submit' value='Go!'></button>
 </form>
@@ -20,10 +20,10 @@ $('form').submit(function(e){
    }
     client.emit('form_submit', sn);
 
-     /*$.post("/api/users", sn)
+     $.post("/api/users", sn)
      .then(function(){
          window.location = '/game';
-     })*/
+     })
   
 })
  // res.json() username -> associate username with client-id -> 

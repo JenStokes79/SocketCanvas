@@ -4,7 +4,6 @@ const http = require('http')
 const users = require('../api/users.js');
 const io = require('../server');
 
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Get ready...' });
@@ -18,33 +17,26 @@ router.get('/game', function(req, res, next) {
 // Store previously drawn lines in this array so 
 // when newcomers join, the whole drawing renders
 let line_history = [];
+//A data hash storing important information for each user
 let people = {};
 
 //handles new connections
 io.on('connection', function(server) {
+    //When users hit GO, store their info in the hash for reference in-game
     server.on('form_submit', function(data) {
-        // console.log(data);
         people[data.name] = data;
         console.log('people:', people);
-        console.log('nate wins:', people.nate.wins);
     });
-    // let client_id = server.id;
-    // server.on('nickname', function(data) {
-    //     //Pushes connection ID to people array... on nickname emit
-    //     people[data.name] = {
-    //         name: data.name,
-    //         client_id: client_id
-    //     }
-    //     console.log('people in the room: ', people)
-    // })
-
+    server.on('show_people', function(data) {
+        console.log('people:', people);
+    });
 
     //emit line history to new client, which will draw pre-existing lines from the entire session
     for (var i in line_history) {
         server.emit('draw_line', { line: line_history[i] });
     }
 
-    //add handler that handles message draw_line when emitted frome existing connections
+    //add handler that handles message draw_line 
     server.on('draw_line', function(data) {
         //add the recieved line to line_history
         line_history.push(data.line);
