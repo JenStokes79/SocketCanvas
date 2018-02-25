@@ -1,20 +1,28 @@
 const express = require('express');
 const router = express.Router();
-
 const users = require('../api/users.js');
+const http = require('http')
+const io = require('../server');
+
+
 
 /* POST users. */
 router.post('/api/users', function(req, res, next) {
+
     res.json(req.body);
-    console.log(req.body);
     users.push(req.body)
+
+    io.on('connection', function(server) {
+        server.emit('nickname', { name: req.body.name });
+    });
+
+
 
 });
 
 /* GET users. */
 router.get('/api/users', function(req, res, next) {
-    // console.log('req.body', req.body);
-    console.log(users)
+    res.json(users);
 });
 
 module.exports = router;

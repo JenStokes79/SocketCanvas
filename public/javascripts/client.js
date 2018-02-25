@@ -8,6 +8,8 @@
 //       b. Game Data: Points, Wins, Current Word, Current Turn for Drawing, Chats, etc.
 
 document.addEventListener("DOMContentLoaded", function() { //VanillaJS for document.ready
+
+
     //Object contains information for tracking uer's mouse
     let mouse = {
         click: false,
@@ -23,6 +25,21 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
 
     //connects socket.io to wherever we need given the context
     let client = io.connect(window.location.host);
+    let people = {};
+    $.get("/api/users", function(data) {
+        console.log('Recieved POST', data);
+    });
+    client.on('nickname', function(data) {
+        client.nickname = data.name;
+        console.log('Assigned nickname ', data);
+        people[client.nickname] = {
+            score: 0,
+            is_drawing: false,
+            client_id: client.id
+        }
+        client.emit('people', people)
+    });
+
 
     // set canvas to half the browser's width and height
     canvas.width = width / 2;
@@ -69,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
         context.stroke();
         //requestAnimationFrame() somewhere for efficiency's sake?
     });
+
 
     //erase drawing recieved from the server
     client.on('erase_board', function(data) {

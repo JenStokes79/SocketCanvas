@@ -3,23 +3,28 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<form method='POST' action='/'>
+<form method='POST'>
     Join as: <input type='text' placeholder='username' id='sn'></input>
-    <input type='submit'></button>
+    <input type='submit' value='Go!'></button>
 </form>
 <script>
+let client = io.connect(window.location.host);
+
 $('form').submit(function(e){
-   
     e.preventDefault();
+
    let sn = {
        name: $('#sn').val(),
-       client_id: '',
-       points: 1
    }
-     $.post("/api/users", sn, function(data, err) {
-      
-     });
+
+     $.post("/api/users", sn)
+     .then(function(){
+         window.location = '/game';
+     })
+  
 })
  // res.json() username -> associate username with client-id -> 
-// persist users in api until disconnection -> store high scores MySQL
+// persist users in api until disconnection -> 
+// kick out users with foreign client IDs -> 
+// store scores MySQL, display top 10-100 on home page
 </script>
