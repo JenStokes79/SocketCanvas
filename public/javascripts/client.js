@@ -26,10 +26,11 @@ document.addEventListener("DOMContentLoaded", function() { //VanillaJS for docum
     //connects socket.io to wherever we need given the context
     let client = io(window.location.host);
 
-    $.get("/api/users", function(data) {
-        // console.log('Recieved POST', data);
-
-    });
+    // $.get("/api/users", function(data) {
+    // console.log('Recieved POST', data);
+    // console.log('client id', client.id) //compare to id in json
+    // client.emit('nickname', { name: data.body.name });
+    // });
 
     // set canvas to half the browser's width and height
     canvas.width = width / 2;

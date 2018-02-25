@@ -8,18 +8,22 @@
     <input type='submit' value='Go!'></button>
 </form>
 <script>
-
+let client = io(window.location.host);
 $('form').submit(function(e){
     e.preventDefault();
 
    let sn = {
        name: $('#sn').val(),
+       client_id: client.id,
+       wins: 0,
+       is_drawing: false
    }
+    client.emit('form_submit', sn);
 
-     $.post("/api/users", sn)
+     /*$.post("/api/users", sn)
      .then(function(){
          window.location = '/game';
-     })
+     })*/
   
 })
  // res.json() username -> associate username with client-id -> 
