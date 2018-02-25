@@ -10,6 +10,9 @@
 
 <script> //Will export as game.js
 let client = io(window.location.host);
-client.emit('show_people')
+
+client.on('show_people', function(data){
+    console.log('People from the server: ', data);
+})
 //loop through the data and display users an stats on the page
 </script>

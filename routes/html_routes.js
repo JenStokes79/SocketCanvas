@@ -26,9 +26,8 @@ io.on('connection', function(server) {
     server.on('form_submit', function(data) {
         people[data.name] = data;
     });
-    server.on('show_people', function(data) {
-        console.log('people:', people);
-    });
+    server.emit('show_people', people)
+
 
     //emit line history to new client, which will draw pre-existing lines from the entire session
     for (var i in line_history) {
