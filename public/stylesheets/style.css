@@ -18,7 +18,8 @@
 canvas {
     position: absolute;
     bottom: 0;
-    /* border: 1px solid red; */
+    margin: 0 auto;
+    border: 1px solid red;
 }
 
 
@@ -38,7 +39,7 @@ canvas {
 #rad {
     position: relative;
     margin-top: 5px;
-    margin-right: %;
+    /* margin-right: %; */
     font-weight: bold;
     color: #ffffff;
     font-size: 18px;
@@ -82,11 +83,6 @@ canvas {
     border-radius: 25px;
     margin-left: 5px;
     margin-top: -5px;
-}
-
-.radcontrols {
-    /* position: absolute; */
-    /* left: 80px; */
 }
 
 
