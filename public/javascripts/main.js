@@ -9,6 +9,16 @@ let client = io(window.location.host);
 let width = window.innerWidth;
 let height = window.innerHeight;
 
+
+function fitToContainer(canvas) {
+    canvas.style.width = '100%';
+    canvas.style.height = '83%';
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+}
+
+fitToContainer(canvas);
+
 let erase = false;
 
 let mouse = {
@@ -17,9 +27,6 @@ let mouse = {
     pos: { x: 0, y: 0 },
     pos_prev: false,
 };
-
-canvas.width = width * .75;
-canvas.height = height * .75;
 
 //Begin keyboard event handlers
 // register mouse event handlers
@@ -31,6 +38,7 @@ canvas.onmousemove = function(e) {
     let rect = canvas.getBoundingClientRect(); //Returns size of the canvas relative to the viewport
     let offsetX = rect.left; //Gather X and Y coords relative to user's viewport
     let offsetY = rect.top;
+    console.log('OffsetX: ', offsetX)
     mouse.pos.x = (e.clientX - offsetX) / width; // normalize mouse position to range 0.0 - 1.0
     mouse.pos.y = (e.clientY - offsetY) / height;
     mouse.move = true;

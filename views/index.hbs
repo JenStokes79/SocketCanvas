@@ -3,21 +3,41 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/javascripts/canvas.js"></script>
+
+{{!-- <script src="/javascripts/canvas.js"></script> --}}
 <form method='POST' action='/game'>
     Join as: <input type='text' placeholder='username' id='sn'></input>
     <input type='submit' value='Go!'></button>
 </form>
 
-<div id='user'>
-  
+<div id='user'></div>  <input id="clearCanvas" type="button" value="Clear Canvas">
+<div id='container'>
+   <!-- Illustrator toolbar -->
+    <div id="toolbar">
+        
+        <div id="rad" class="size">
+        Weight: <span id="radval">2</span>
+            <!-- Brush Thickness -->
+            <span class="radcontrols">
+                <div id="decrad" class="radcontrol">-</div>
+                <div id="incrad" class="radcontrol">+</div>
+            </span>
+            <div id="colors">
+            </div>
+        </div>
+       
+          
+    </div>
+    <!-- Drawing board -->
+    <br>
+<canvas id='canvas'>Your browser doesn't support HTML5 :(</canvas>
 </div>
-
-{{!-- Create color selectors right here --}}
-<canvas id='myCanvas'></canvas>
-
+{{!-- Old canvas --}}
+{{!-- <canvas id='myCanvas'></canvas> --}}
+<script src="javascripts/main.js"></script>
+<script src="javascripts/radius.js"></script>
+<script src="javascripts/colors.js"></script>
 <script> //Will export as game.js
-let client = io(window.location.host);
 
 //let client = io(window.location.host);
 $('form').submit(function(e){
@@ -39,14 +59,5 @@ $('form').submit(function(e){
       }
    })
 
-     /*$.post("/api/users", sn)
-     .then(function(){
-         window.location = '/game';
-     })*/
-  
 })
- // res.json() username -> associate username with client-id -> 
-// persist users in api until disconnection -> 
-// kick out users with foreign client IDs -> 
-// store scores MySQL, display top 10-100 on home page
 </script>
