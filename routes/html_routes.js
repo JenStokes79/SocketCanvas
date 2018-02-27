@@ -24,13 +24,25 @@ let people = {};
 //handles new connections
 io.on('connection', function(server) {
 
-    let client_name = server.name;
+
     //When users hit GO, store their info in the hash for reference in-game
     server.on('join', function(data) {
         people[data.name] = data;
-        client_name = data.name;
+        server.name = data.name;
         io.emit('join', people)
-            // console.log(server.name); //bad describer, should be socket.name
+            //bad describer, should be socket.name
+    });
+
+    server.on('disconnect', function() {
+        for (key in people) {
+            if (people[key].client_id === server.id) {
+                //io.emit to client
+                console.log(`${people[key].name} disconnected`)
+                delete people[key];
+                console.log(`Updated room: ${JSON.stringify(people)}`);
+            }
+            io.emit('disconnect', people);
+        }
     });
 
     //emit line history to new client, which will draw pre-existing lines from the entire session
@@ -55,8 +67,9 @@ io.on('connection', function(server) {
         io.emit('erase_board', { message: 'Server to client: User x erased the board' });
     });
 
+
+
 });
 
-//TODO: Handle join, handle leave
 
 module.exports = router;

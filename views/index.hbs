@@ -4,12 +4,11 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
 
-{{!-- <script src="/javascripts/canvas.js"></script> --}}
 <form method='POST' action='/game'>
     Join as: <input type='text' placeholder='username' id='sn'></input>
     <input type='submit' value='Go!'></button>
 </form>
-
+<div id='status_msg'></div>
 <div id='user'></div>  
 <div id='container'>
    <!-- Illustrator toolbar -->
@@ -29,14 +28,12 @@
     <br>
 <canvas id='canvas'>Your browser doesn't support HTML5 :(</canvas>
 </div>
-{{!-- Old canvas --}}
-{{!-- <canvas id='myCanvas'></canvas> --}}
 <script src="javascripts/main.js"></script>
 <script src="javascripts/radius.js"></script>
 <script src="javascripts/colors.js"></script>
-<script> //Will export as game.js
+<script src="javascripts/logic.js"></script>
+<script> 
 
-//let client = io(window.location.host);
 $('form').submit(function(e){
     e.preventDefault();
 
@@ -47,14 +44,5 @@ $('form').submit(function(e){
        is_drawing: false
    }
     client.emit('join', sn);
-
-   client.on('join', function(data){
-      console.log(data);
-      $('#user').html('');
-      for(key in data){
-       $('#user').append(`<div>${data[key].name}</div>`)
-      }
-   })
-
 })
 </script>
