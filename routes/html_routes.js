@@ -30,7 +30,8 @@ io.on('connection', function(server) {
         people[data.name] = data;
         server.name = data.name;
         io.emit('join', people)
-            //bad describer, should be socket.name
+        console.log('Current room: ', people);
+        //bad describer, should be socket.name
     });
 
     server.on('disconnect', function() {

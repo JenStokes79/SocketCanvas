@@ -1,5 +1,6 @@
 client.on('join', function(data) { //move to game.js
     console.log(data);
+    $('form').hide();
     //check the amount of users present 
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
@@ -19,9 +20,7 @@ client.on('disconnect', function(data) {
     console.log(data);
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
-    } else if (Object.keys(data).length >= 2) {
-        $('#status_msg').text('Let the games begin!')
-            //io.emit initialize game
+            //cancel game if in progress...
     }
     $('#user').html('');
     for (key in data) {
