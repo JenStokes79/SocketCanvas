@@ -38,7 +38,6 @@ canvas.onmousemove = function(e) {
     let rect = canvas.getBoundingClientRect(); //Returns size of the canvas relative to the viewport
     let offsetX = rect.left; //Gather X and Y coords relative to user's viewport
     let offsetY = rect.top;
-    console.log('OffsetX: ', offsetX)
     mouse.pos.x = (e.clientX - offsetX) / width; // normalize mouse position to range 0.0 - 1.0
     mouse.pos.y = (e.clientY - offsetY) / height;
     mouse.move = true;
