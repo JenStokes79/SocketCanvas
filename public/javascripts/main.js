@@ -62,7 +62,6 @@ function eraseBoard() {
 // draw line received from server
 client.on('draw_line', function(data) {
     let line = data.line;
-    console.log(data.line[2].color)
     context.beginPath();
     context.lineCap = 'round';
     context.lineWidth = line[2].radius * 2;
