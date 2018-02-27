@@ -4,20 +4,20 @@ const http = require('http')
 const users = require('../api/users.js');
 const io = require('../server');
 
-/* GET home page. */
-// router.get('/', function(req, res, next) {
-//     res.render('index', { title: 'Get ready...' });
-// });
+/* GET test page. */
+router.get('/test', function(req, res, next) {
+    res.render('test', { title: 'Awwww yeahhh' });
+});
 
 /* GET game page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Heroku WebSocket Canvas Deployment' });
-
 });
 
 // Store previously drawn lines in this array so 
 // when newcomers join, the whole drawing renders
 let line_history = [];
+let line_rad = 2;
 //A data hash storing important information for each user
 let people = {};
 

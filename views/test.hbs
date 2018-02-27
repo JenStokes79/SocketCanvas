@@ -1,0 +1,24 @@
+<script src="/socket.io/socket.io.js"></script>
+ <!-- Illustrator toolbar -->
+    <div id="toolbar">
+        <div id="rad" class="size">
+        Weight: <span id="radval">2</span>
+            <!-- Brush Thickness -->
+            <span class="radcontrols">
+                <div id="decrad" class="radcontrol">-</div>
+                <div id="incrad" class="radcontrol">+</div>
+            </span>
+            <div id="colors">
+            </div>
+        </div>
+        <div><input id="clearCanvas" type="button" value="Clear Canvas"></div>
+    </div>
+    <!-- Drawing board -->
+    <br>
+    <canvas id='canvas' style="display: block;">
+        Your browser doesn't support canvas :(
+	</canvas>
+
+    <script src="javascripts/main.js"></script>
+    <script src="javascripts/radius.js"></script>
+    <script src="javascripts/colors.js"></script>

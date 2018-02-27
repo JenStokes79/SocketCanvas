@@ -1,12 +1,3 @@
-// TODO:
-// 1. Color swatches.
-// 2. Brush thickness
-// 3. Erase button
-// 4. Once we meet the minimum requirements for a functional drawing board, it's time to introduce game logic
-//      Other events to be emitted through Socket.io: 
-//       a. Users in the room (server emits users, data is used to determine draw on/off)
-//       b. Game Data: Points, Wins, Current Word, Current Turn for Drawing, Chats, etc.
-
 document.addEventListener("DOMContentLoaded", function() { //VanillaJS for document.ready
     //Object contains information for tracking uer's mouse
     let mouse = {

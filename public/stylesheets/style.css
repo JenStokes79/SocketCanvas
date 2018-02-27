@@ -1,15 +1,102 @@
-body {
-    padding: 50px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/*adds to the inside of the divs*/
+
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-a {
-    color: #00B7FF;
+
+/*color toolbar*/
+
+#toolbar {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    /* position: fixed; */
+    top: 0;
+    background-color: #b5a89f;
+}
+
+#rad {
+    margin-top: 5px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 18px;
 }
 
 canvas {
-    background: #fff;
-    margin: 20px auto;
-    border: 5px solid #E8E8E8;
-    display: block;
+    border: 2px solid red;
+}
+
+
+/*clear canvas*/
+
+#clearCanvas {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 5px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #ff1a1a;
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0px 2px #999;
+}
+
+#clearCanvas:active {
+    transform: translateY(2px);
+}
+
+
+/*controls to alter line thickness*/
+
+.radcontrol {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background-color: #12bdfd;
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    border-radius: 25px;
+    margin-left: 5px;
+    margin-top: -5px;
+}
+
+.size {
+    position: relative;
+}
+
+.radcontrols {
+    position: absolute;
+    left: 80px;
+}
+
+
+/* color palette options */
+
+#colors {
+    float: right;
+    cursor: pointer;
+}
+
+.swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.5), 0px 2px 2px rgba(0, 0, 0, 0.5);
+    margin-left: 10px;
+    /* margin-top: -15px; */
+}
+
+.swatch.active {
+    border: 2px solid white;
+    box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.5);
 }
