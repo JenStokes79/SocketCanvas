@@ -28,6 +28,8 @@ let mouse = {
     pos_prev: false,
 };
 
+canvas.onmousedown = function(e) { mouse.click = true; };
+canvas.onmouseup = function(e) { mouse.click = false; };
 //Begin keyboard event handlers
 // register mouse event handlers
 //TODO: Turn on when is_drawing is true for the client

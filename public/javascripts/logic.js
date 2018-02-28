@@ -505,15 +505,10 @@ let dictionary = [
         "you"
     ]
     //end dictionary
-
-//select a random word from the dictionary
+    //select a random word from the dictionary
 let rand_word = dictionary[Math.floor(Math.random() * dictionary.length)];
-
-
-
 //Handle join
 client.on('join', function(data) {
-
     //check the amount of users present 
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
@@ -532,32 +527,34 @@ client.on('join', function(data) {
         $('#user').append(`<div>${data[key].name}<br>wins: ${data[key].wins}<br><br></div>`)
     }
 
-}); //end join
-
+});
+//end join
 //Handle disconnect on client side
 client.on('disconnect', function(data) {
     console.log(data);
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
-            //cancel game if in progress...
+
     }
     $('#user').html('');
     for (key in data) {
         $('#user').append(`<div>${data[key].name}<br>wins: ${data[key].wins}<br><br></div>`)
     }
-}); //end handle disconnect
-
+});
+//end handle disconnect
 client.on('init_game', function(data) { //data contains the room again
     let index = 0;
     let emit_guess = false;
     let user_drawing = '';
-
 
     function time_turn() {
         //Length of time for each turn
         let time = 10;
 
         function decrement() {
+            client.on('disconnect', function() {
+                clearInterval(timer);
+            })
             time--;
             console.log(time);
             //if timer runs out
@@ -577,10 +574,10 @@ client.on('init_game', function(data) { //data contains the room again
         let timer = setInterval(decrement, 1000) //Initialize timer
     }
 
-
     function delegate_turns() {
+        //TODO: handle random word + chat integration
         data[Object.keys(data)[index]].is_drawing = true; //Set the appropriate client's drawing to true
-        //    iterate through model of room
+        //iterate through model of room
         for (key in data) {
             //if the person drawing's client id matches the client's id, then emit user_drawing
             if (data[key].is_drawing && data[key].client_id === client.id) {
@@ -596,5 +593,5 @@ client.on('init_game', function(data) { //data contains the room again
         }
         time_turn();
     }
-    delegate_turns();
+    delegate_turns(); //initial call
 });
