@@ -70,7 +70,6 @@ function eraseBoard() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-
 //Begin Socket.io event handlers
 // draw line received from server
 client.on('draw_line', function(data) {
@@ -106,6 +105,6 @@ function mainLoop() {
     }
     //if  not drawing, assign values to pos_prev to begin the drawing process
     mouse.pos_prev = { x: mouse.pos.x, y: mouse.pos.y };
-    setTimeout(mainLoop, 25); //recursive loop every 25ms
+    setTimeout(mainLoop, 15); //recursive loop every 25ms
 }
 mainLoop()

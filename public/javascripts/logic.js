@@ -550,7 +550,7 @@ client.on('disconnect', function(data) {
 client.on('init_game', function(data) { //data contains the room again
     let index = 0;
     let emit_guess = false;
-
+    let user_drawing = '';
 
 
     function time_turn() {
@@ -580,14 +580,15 @@ client.on('init_game', function(data) { //data contains the room again
 
     function delegate_turns() {
         data[Object.keys(data)[index]].is_drawing = true; //Set the appropriate client's drawing to true
-        //iterate through the model of the room
+        //    iterate through model of room
         for (key in data) {
-            //if client's ID matches with person where drawing = true, emit user_drawing event
+            //if the person drawing's client id matches the client's id, then emit user_drawing
             if (data[key].is_drawing && data[key].client_id === client.id) {
+                user_drawing = data[key].name;
                 console.log(`${user_drawing} is drawing`)
                 client.emit('user_drawing', data);
             }
-            //if not drawing, but a member of the game then emit user_guessing
+            //if user is not drawing and a client, emit user_guessing
             if (!data[key].is_drawing && data[key].client_id === client.id) {
                 client.emit('user_guessing')
                 console.log(`${data[key].name} is not drawing`)
