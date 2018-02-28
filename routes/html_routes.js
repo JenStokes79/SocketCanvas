@@ -20,18 +20,17 @@ let line_history = [];
 let line_rad = 2;
 //A data hash storing important information for each user
 let people = {};
-
 //handles new connections
 io.on('connection', function(server) {
-
 
     //When users hit GO, store their info in the hash for reference in-game
     server.on('join', function(data) {
         people[data.name] = data;
         server.name = data.name;
         io.emit('join', people)
-        console.log('Current room: ', people);
-        //bad describer, should be socket.name
+            // console.log('Current room: ', people);
+            // console.log(server.name, server.id)
+            //bad describer, should be socket.name
     });
 
     server.on('disconnect', function() {
@@ -68,7 +67,17 @@ io.on('connection', function(server) {
         io.emit('erase_board', { message: 'Server to client: User x erased the board' });
     });
 
+    //add handler for init_game
+    server.on('init_game', function() {
+        io.emit('init_game', people);
+    });
 
+    server.on('user_drawing', function(data) {
+        server.emit('user_drawing', 'you are up!');
+    });
+    server.on('user_guessing', function(data) {
+        server.emit('user_guessing', 'you are guessing');
+    });
 
 });
 
