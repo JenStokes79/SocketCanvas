@@ -36,7 +36,7 @@
 
 $('form').submit(function(e){
     e.preventDefault();
-
+   $('form').hide();
    let sn = {
        name: $('#sn').val(),
        client_id: client.id,

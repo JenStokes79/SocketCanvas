@@ -1,6 +1,6 @@
 client.on('join', function(data) { //move to game.js
     console.log(data);
-    $('form').hide();
+
     //check the amount of users present 
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
