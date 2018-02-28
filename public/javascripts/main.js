@@ -89,8 +89,6 @@ client.on('draw_line', function(data) {
 //erase drawing recieved from the server
 client.on('erase_board', function(data) {
     eraseBoard();
-    console.log(data.people)
-
 });
 
 // main loop, running every 25ms

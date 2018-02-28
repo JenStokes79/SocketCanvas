@@ -76,6 +76,7 @@ io.on('connection', function(server) {
     //add handler for init_game
     server.on('init_game', function() {
         io.emit('init_game', people);
+        io.emit('erase_board', people);
     });
 
     server.on('user_drawing', function(data) {

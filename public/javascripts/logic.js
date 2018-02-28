@@ -567,6 +567,7 @@ client.on('init_game', function(data) { //data contains the room again
                 index++;
                 //insure it is always cycling through our object (NON-ZERO INDEXED)
                 if (index > Object.keys(data).length - 1) index = 0;
+                eraseBoard();
                 //delegate turns
                 delegate_turns();
             }
