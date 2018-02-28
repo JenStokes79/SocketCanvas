@@ -17,12 +17,12 @@ router.get('/', function(req, res, next) {
 // Store previously drawn lines in this array so 
 // when newcomers join, the whole drawing renders
 let line_history = [];
-let line_rad = 2;
 //A data hash storing important information for each user
 let people = {};
 //handles new connections
 io.on('connection', function(server) {
 
+    //handle non-game members lurking on the page
     for (key in people) {
         if (server.id != people[key].client_id) {
             console.log(`${server.id} is lurking`)

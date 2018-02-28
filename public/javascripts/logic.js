@@ -550,51 +550,50 @@ client.on('disconnect', function(data) {
 client.on('init_game', function(data) { //data contains the room again
     let index = 0;
     let emit_guess = false;
-    let user_drawing = '';
+
 
 
     function time_turn() {
+        //Length of time for each turn
         let time = 10;
 
         function decrement() {
             time--;
             console.log(time);
+            //if timer runs out
             if (!time) {
+                //stop the timer
                 clearInterval(timer);
+                //set client's is_drawing to false
                 data[Object.keys(data)[index]].is_drawing = false;
+                //increment index to delegate the next turn
                 index++;
+                //insure it is always cycling through our object (NON-ZERO INDEXED)
                 if (index > Object.keys(data).length - 1) index = 0;
+                //delegate turns
                 delegate_turns();
             }
         }
-        let timer = setInterval(decrement, 1000)
+        let timer = setInterval(decrement, 1000) //Initialize timer
     }
 
 
     function delegate_turns() {
-        console.log('obj length', Object.keys(data).length)
-        data[Object.keys(data)[index]].is_drawing = true;
-
+        data[Object.keys(data)[index]].is_drawing = true; //Set the appropriate client's drawing to true
+        //iterate through the model of the room
         for (key in data) {
-
+            //if client's ID matches with person where drawing = true, emit user_drawing event
             if (data[key].is_drawing && data[key].client_id === client.id) {
-                user_drawing = data[key].name;
                 console.log(`${user_drawing} is drawing`)
                 client.emit('user_drawing', data);
             }
-
+            //if not drawing, but a member of the game then emit user_guessing
             if (!data[key].is_drawing && data[key].client_id === client.id) {
                 client.emit('user_guessing')
                 console.log(`${data[key].name} is not drawing`)
             }
-
         }
-
-
         time_turn();
-
-
     }
     delegate_turns();
-
 });
