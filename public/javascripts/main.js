@@ -31,9 +31,23 @@ let mouse = {
 //Begin keyboard event handlers
 // register mouse event handlers
 //TODO: Turn on when is_drawing is true for the client
+client.on('user_drawing', function(data) {
+    console.log(data)
+    $('#clearCanvas').show();
+    $('#rad').show();
+    $('#colors').show();
+    canvas.onmousedown = function(e) { mouse.click = true; };
+    canvas.onmouseup = function(e) { mouse.click = false; };
+})
 
-canvas.onmousedown = function(e) { mouse.click = true; };
-canvas.onmouseup = function(e) { mouse.click = false; };
+client.on('user_guessing', function(data) {
+    console.log(data)
+    $('#clearCanvas').hide();
+    $('#rad').hide();
+    $('#colors').hide();
+    canvas.onmousedown = function(e) { mouse.click = false; };
+    //disable drawing ability
+})
 
 //Gathers data on mouse position to be emitted as a WebSocket event
 canvas.onmousemove = function(e) {
@@ -45,14 +59,11 @@ canvas.onmousemove = function(e) {
     mouse.move = true;
 };
 
-//Begin keypress shortcuts
-document.onkeypress = function(e) {
-        let x = e.which || e.keyCode;
-        if (x === 120) { //if 'X' key is pressed, erase lines
-            erase = true;
-        }
-    }
-    //end key event handlers
+//Begin erase
+$('#clearCanvas').on('click', function() {
+    erase = true;
+});
+//end erase
 
 //begin drawing utility functions
 function eraseBoard() {
@@ -76,8 +87,9 @@ client.on('draw_line', function(data) {
 
 //erase drawing recieved from the server
 client.on('erase_board', function(data) {
-    console.log(data.message);
     eraseBoard();
+    console.log(data.people)
+
 });
 
 // main loop, running every 25ms

@@ -23,6 +23,12 @@ let people = {};
 //handles new connections
 io.on('connection', function(server) {
 
+    for (key in people) {
+        if (server.id != people[key].client_id) {
+            console.log(`${server.id} is lurking`)
+        }
+    }
+
     //When users hit GO, store their info in the hash for reference in-game
     server.on('join', function(data) {
         people[data.name] = data;
@@ -64,7 +70,7 @@ io.on('connection', function(server) {
         //erase line history
         line_history = [];
         // send line to all clients
-        io.emit('erase_board', { message: 'Server to client: User x erased the board' });
+        io.emit('erase_board', people);
     });
 
     //add handler for init_game
@@ -73,7 +79,11 @@ io.on('connection', function(server) {
     });
 
     server.on('user_drawing', function(data) {
-        server.emit('user_drawing', 'you are up!');
+        // console.log('New data: ', data)
+        //emit to the user drawing
+        server.emit('user_drawing', `you are drawing!`);
+        //emit to entire namespace
+        io.emit('message', `${data} is drawing!`);
     });
     server.on('user_guessing', function(data) {
         server.emit('user_guessing', 'you are guessing');

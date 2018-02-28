@@ -505,9 +505,15 @@ let dictionary = [
         "you"
     ]
     //end dictionary
-    //Handle join
+
+//select a random word from the dictionary
+let rand_word = dictionary[Math.floor(Math.random() * dictionary.length)];
+
+
+
+//Handle join
 client.on('join', function(data) {
-    console.log(data);
+
     //check the amount of users present 
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
@@ -521,6 +527,7 @@ client.on('join', function(data) {
     for (key in data) {
         if (data[key].client_id === client.id) {
             client.name = data[key].name;
+            console.log(`${client.name} just joined the room`);
         }
         $('#user').append(`<div>${data[key].name}<br>wins: ${data[key].wins}<br><br></div>`)
     }
@@ -542,43 +549,52 @@ client.on('disconnect', function(data) {
 
 client.on('init_game', function(data) { //data contains the room again
     let index = 0;
-
     let emit_guess = false;
-    let emit_draw = false;
-    data[Object.keys(data)[index]].is_drawing = true;
+    let user_drawing = '';
 
-    for (key in data) {
 
-        if (data[key].is_drawing && data[key].client_id === client.id) {
-            emit_draw = true;
+    function time_turn() {
+        let time = 10;
+
+        function decrement() {
+            time--;
+            console.log(time);
+            if (!time) {
+                clearInterval(timer);
+                data[Object.keys(data)[index]].is_drawing = false;
+                index++;
+                if (index > Object.keys(data).length - 1) index = 0;
+                delegate_turns();
+            }
+        }
+        let timer = setInterval(decrement, 1000)
+    }
+
+
+    function delegate_turns() {
+        console.log('obj length', Object.keys(data).length)
+        data[Object.keys(data)[index]].is_drawing = true;
+
+        for (key in data) {
+
+            if (data[key].is_drawing && data[key].client_id === client.id) {
+                user_drawing = data[key].name;
+                console.log(`${user_drawing} is drawing`)
+                client.emit('user_drawing', data);
+            }
+
+            if (!data[key].is_drawing && data[key].client_id === client.id) {
+                client.emit('user_guessing')
+                console.log(`${data[key].name} is not drawing`)
+            }
+
         }
 
-        if (!data[key].is_drawing && data[key].client_id === client.id) {
-            emit_guess = true;
-        }
+
+        time_turn();
+
 
     }
-    if (emit_draw) {
-        client.emit('user_drawing');
-    }
-    if (emit_guess) {
-        client.emit('user_guessing')
-    }
-    console.log('Game initialized. Room updated: ', data)
-        // write handler for is_drawing in main.js
-        // It should: 
-        // 1. enable mousemove/down events for the client where is_drawing = true
-        // 2. disable mousemove/down events for clients where is_drawing = false;
-        // 3. invoke a timer
-        // 4. on timeout display message and increment index to delegate next turn
+    delegate_turns();
+
 });
-
-client.on('user_drawing', function(data) {
-    console.log(data)
-        //change color of their username or something to signal they are up
-        //enable drawing
-})
-client.on('user_guessing', function(data) {
-    console.log(data)
-        //disable drawing ability
-})
