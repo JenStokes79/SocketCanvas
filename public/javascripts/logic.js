@@ -468,7 +468,7 @@ let dictionary = [
         "unit",
         "usually",
         "vegetarian",
-        "vegtable",
+        "vegetable",
         "vest",
         "video camera",
         "Waldo",
@@ -507,11 +507,19 @@ let dictionary = [
     //end dictionary
     //select a random word from the dictionary
 let rand_word = dictionary[Math.floor(Math.random() * dictionary.length)];
-//Handle join
+//Handle lurkers
+client.on('lurkers', function() {
+        canvas.onmousedown = function(e) { mouse.click = false; };
+        $('#clearCanvas').hide();
+        $('#rad').hide();
+        $('#colors').hide();
+    })
+    //Handle join
 client.on('join', function(data) {
     //check the amount of users present 
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
+        client.emit('abort_game');
     } else if (Object.keys(data).length >= 2) {
         //emit game begin
         $('#status_msg').text('Let the games begin!')
@@ -534,7 +542,11 @@ client.on('disconnect', function(data) {
     console.log(data);
     if (Object.keys(data).length < 2) {
         $('#status_msg').text('Waiting for more people... Feel free to draw!')
-
+        $('#clearCanvas').show();
+        $('#rad').show();
+        $('#colors').show();
+        canvas.onmousedown = function(e) { mouse.click = true; };
+        canvas.onmouseup = function(e) { mouse.click = false; };
     }
     $('#user').html('');
     for (key in data) {
@@ -545,27 +557,31 @@ client.on('disconnect', function(data) {
 client.on('init_game', function(data) { //data contains the room again
     let index = 0;
     let emit_guess = false;
-    let user_drawing = '';
+    // let user_drawing = '';
 
     function time_turn() {
         //Length of time for each turn
-        let time = 10;
+        let time = 30;
 
         function decrement() {
             client.on('disconnect', function() {
                 clearInterval(timer);
+                $('#timer').text('');
             })
             time--;
-            console.log(time);
+            $('#timer').text(time);
+            // console.log(time);
             //if timer runs out
             if (!time) {
                 //stop the timer
                 clearInterval(timer);
+                //clear text
+                $('#status_msg').text('');
                 //set client's is_drawing to false
                 data[Object.keys(data)[index]].is_drawing = false;
                 //increment index to delegate the next turn
                 index++;
-                //insure it is always cycling through our object (NON-ZERO INDEXED)
+                //insure it is always cycling through our object 
                 if (index > Object.keys(data).length - 1) index = 0;
                 eraseBoard();
                 //delegate turns
@@ -577,6 +593,7 @@ client.on('init_game', function(data) { //data contains the room again
 
     function delegate_turns() {
         //TODO: handle random word + chat integration
+
         data[Object.keys(data)[index]].is_drawing = true; //Set the appropriate client's drawing to true
         //iterate through model of room
         for (key in data) {
@@ -585,6 +602,9 @@ client.on('init_game', function(data) { //data contains the room again
                 user_drawing = data[key].name;
                 console.log(`${user_drawing} is drawing`)
                 client.emit('user_drawing', data);
+                client.emit('rand_word', rand_word);
+                $('#status_msg').text(`The word is ${rand_word}`)
+                    //also emit the word globally without revealing it
             }
             //if user is not drawing and a client, emit user_guessing
             if (!data[key].is_drawing && data[key].client_id === client.id) {

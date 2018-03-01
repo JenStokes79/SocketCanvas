@@ -19,13 +19,18 @@ router.get('/', function(req, res, next) {
 let line_history = [];
 //A data hash storing important information for each user
 let people = {};
+let game_in_progress = false;
 //handles new connections
 io.on('connection', function(server) {
-
-    //handle non-game members lurking on the page
+    if (game_in_progress) server.emit('lurkers');
+    server.on('abort_game', function() {
+            game_in_progress = false;
+        })
+        //handle non-game members lurking on the page
     for (key in people) {
         if (server.id != people[key].client_id) {
             console.log(`${server.id} is lurking`)
+
         }
     }
 
@@ -42,7 +47,6 @@ io.on('connection', function(server) {
     server.on('disconnect', function() {
         for (key in people) {
             if (people[key].client_id === server.id) {
-                //io.emit to client
                 console.log(`${people[key].name} disconnected`)
                 delete people[key];
                 console.log(`Updated room: ${JSON.stringify(people)}`);
@@ -75,8 +79,10 @@ io.on('connection', function(server) {
 
     //add handler for init_game
     server.on('init_game', function() {
+        game_in_progress = true;
         io.emit('init_game', people);
         io.emit('erase_board', people);
+        line_history = [];
     });
 
     server.on('user_drawing', function(data) {
@@ -89,6 +95,9 @@ io.on('connection', function(server) {
     server.on('user_guessing', function(data) {
         server.emit('user_guessing', 'you are guessing');
     });
+    server.on('rand_word', function(data) {
+        console.log(`Server recieved the word ${data}`);
+    })
 
 });
 

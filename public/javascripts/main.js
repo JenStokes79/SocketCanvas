@@ -30,9 +30,7 @@ let mouse = {
 
 canvas.onmousedown = function(e) { mouse.click = true; };
 canvas.onmouseup = function(e) { mouse.click = false; };
-//Begin keyboard event handlers
-// register mouse event handlers
-//TODO: Turn on when is_drawing is true for the client
+
 client.on('user_drawing', function(data) {
     console.log(data)
     $('#clearCanvas').show();
