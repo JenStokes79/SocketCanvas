@@ -27,6 +27,13 @@ io.on('connection', function(server) {
         game_in_progress = false;
     }
 
+    //handle non-game members lurking on the page while game in progress
+    for (key in people) {
+        if (server.id != people[key].client_id) {
+            console.log(`${server.id} is lurking`)
+            server.emit('lurkers');
+        }
+    }
 
 
 
@@ -84,7 +91,7 @@ io.on('connection', function(server) {
         io.emit('init_game', people);
         io.emit('erase_board', people);
         line_history = [];
-        //handle non-game members lurking on the page
+        //handle non-game members lurking on the page pre-game
         for (key in people) {
             if (server.id != people[key].client_id) {
                 console.log(`${server.id} is lurking`)
