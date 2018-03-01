@@ -22,17 +22,17 @@ let people = {};
 let game_in_progress = false;
 //handles new connections
 io.on('connection', function(server) {
-    if (game_in_progress) server.emit('lurkers');
-    server.on('abort_game', function() {
-            game_in_progress = false;
-        })
-        //handle non-game members lurking on the page
-    for (key in people) {
-        if (server.id != people[key].client_id) {
-            console.log(`${server.id} is lurking`)
-
-        }
+    if (Object.keys(people).length < 2) {
+        server.emit('abort_game');
+        game_in_progress = false;
     }
+
+
+
+
+    server.on('abort_game', function() {
+        game_in_progress = false;
+    })
 
     //When users hit GO, store their info in the hash for reference in-game
     server.on('join', function(data) {
@@ -80,9 +80,18 @@ io.on('connection', function(server) {
     //add handler for init_game
     server.on('init_game', function() {
         game_in_progress = true;
+        console.log('game is true')
         io.emit('init_game', people);
         io.emit('erase_board', people);
         line_history = [];
+        //handle non-game members lurking on the page
+        for (key in people) {
+            if (server.id != people[key].client_id) {
+                console.log(`${server.id} is lurking`)
+                server.emit('lurkers');
+            }
+        }
+
     });
 
     server.on('user_drawing', function(data) {
